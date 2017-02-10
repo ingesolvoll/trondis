@@ -1,2 +1,0 @@
-[2017-02-10 20:23:03,000][DEBUG][org.eclipse.jetty.util.log] Logging to org.slf4j.impl.Log4jLoggerAdapter(org.eclipse.jetty.util.log) via org.eclipse.jetty.util.log.Slf4jLog
-[2017-02-10 20:23:03,054][INFO][org.eclipse.jetty.util.log] Logging initialized @3942ms
