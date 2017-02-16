@@ -2,7 +2,7 @@
   (:require [reagent.core :as r]
             [soda-ash.core :as sa]))
 
-(enable-console-print!)
+(enable-console-print!
 
 ;; Let's see if we can trigger a proper deploy
 
