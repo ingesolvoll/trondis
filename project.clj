@@ -12,8 +12,10 @@
                  [bk/ring-gzip "0.1.1"]
                  [ring.middleware.logger "0.5.0"]
                  [compojure "1.5.0"]
+                 [soda-ash "0.2.0"]
                  [environ "1.0.3"]
-                 [reagent "0.6.0"]]
+                 [reagent "0.6.0"]
+                 [re-frame "0.9.1" :exclusions [reagent]]]
 
   :plugins [[lein-cljsbuild "1.1.3"]
             [lein-environ "1.0.3"]]
