@@ -4,6 +4,8 @@
 
 (enable-console-print!)
 
+;; Let's see if we can trigger a proper deploy
+
 (defn menu []
   [:div.ui.large.secondary.inverted.pointing.menu
    [:a.active.item "Home"]
