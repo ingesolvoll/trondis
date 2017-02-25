@@ -1,26 +1,28 @@
 (ns ls.core
   (:require [reagent.core :as r]
-            [soda-ash.core :as sa]))
+            [soda-ash.core :as sa]
+            [reagent.session :as session]
+            [bidi.bidi :as bidi]
+            [accountant.core :as accountant]))
 
 (enable-console-print!)
 
-;; Let's see if we can trigger a proper deploy
+(def app-routes
+  ["/"
+   [["" :index]
+    ["login" :login]
+    ["signup" :sign-up]
+    [true :four-o-four]]])
 
 (defn menu []
   [:div.ui.large.secondary.inverted.pointing.menu
-   [:a.active.item "Home"]
-   [:a.item "Not home"]
+   [:a.active.item {:href (bidi/path-for app-routes :index)} "Home"]
+   [:a.item {:href (bidi/path-for app-routes :mamma)} "Not home"]
    [:a.item "Away"]
    [:div.right.item
-    [:a.ui.inverted.button "Log in"]
-    [:a.ui.inverted.button "Sign up"]]])
+    [:a.ui.inverted.button {:href (bidi/path-for app-routes :login)} "Log in"]
+    [:a.ui.inverted.button {:href (bidi/path-for app-routes :sign-up)} "Sign up"]]])
 
-(defn main-header []
-  [:div.ui.text.container
-   [:h1.ui.inverted.header
-    "Grunderbunder"]
-   [:h2 "Et sted å grunde litt!"]
-   [:div.ui.huge.primary.button "Kjør på " [:i.right.arrow.icon]]])
 
 (defn main-content []
   [:div.ui.vertical.stripe.segment
@@ -45,18 +47,50 @@
       [:p "F.eks. sa de ditt og datt, og mye annet"]]
      ]]])
 
+(defmulti main-content-multi identity)
+
+(defmethod main-content-multi :login []
+          [:div "login og greier"])
+
+(defmethod main-content-multi :index []
+  [:div.ui.text.container
+   [:h1.ui.inverted.header
+    "Header her " (session/get :route)]
+   [:h2 "Et sted å grunde litt!"]
+   [:div.ui.huge.primary.button "Kjør på " [:i.right.arrow.icon]]])
+
+(defmethod main-content-multi :default []
+  [:div "her da"])
+
 (defn main []
-  [:div.pusher
-   [:div.ui.inverted.vertical.masthead.center.aligned.segment
-    [:div.ui.container
-     [menu]
-     [main-header]]]
-   [main-content]
-   [more-main-content]])
+  (println "snuppedup")
+
+  (fn []
+    (let [page (:current-page (session/get :route))]
+      [:div.pusher
+       [:div.ui.inverted.vertical.masthead.center.aligned.segment
+        [:div.ui.container
+         [menu]
+         [main-content-multi page]]]
+       [more-main-content]])))
 
 (defn start []
   (r/render-component
     [main]
     (.getElementById js/document "app")))
 
+(defn init! []
+  (accountant/configure-navigation!
+    {:nav-handler  (fn
+                     [path]                                 ;;(1)
+                     (let [match (bidi/match-route app-routes path)
+                           current-page (:handler match)
+                           route-params (:route-params match)]
+                       (session/put! :route {:current-page current-page
+                                             :route-params route-params})))
+     :path-exists? (fn [path]
+                     (boolean (bidi/match-route app-routes path)))})
+  (accountant/dispatch-current!))
+
+(init!)
 (start)

@@ -15,6 +15,9 @@
                  [soda-ash "0.2.0"]
                  [environ "1.0.3"]
                  [reagent "0.6.0"]
+                 [reagent-utils "0.2.0"]
+                 [bidi "2.0.16"]
+                 [venantius/accountant "0.1.7"]
                  [re-frame "0.9.1" :exclusions [reagent]]]
 
   :plugins [[lein-cljsbuild "1.1.3"]
