@@ -17,7 +17,7 @@
 (defn menu []
   [:div.ui.large.secondary.inverted.pointing.menu
    [:a.active.item {:href (bidi/path-for app-routes :index)} "Home"]
-   [:a.item {:href (bidi/path-for app-routes :mamma)} "Not home"]
+   [:a.item {:href "mammamia"} "Not home"]
    [:a.item "Away"]
    [:div.right.item
     [:a.ui.inverted.button {:href (bidi/path-for app-routes :login)} "Log in"]
@@ -49,8 +49,21 @@
 
 (defmulti main-content-multi identity)
 
+(defmethod main-content-multi :four-o-four []
+  "Non-existing routes go here"
+  [:span
+   [:h1 "404"]
+   [:p "What you are looking for, "]
+   [:p "I do not have."]])
+
 (defmethod main-content-multi :login []
-          [:div "login og greier"])
+          [:div.ui.stacked.segment
+           [:div.field
+            [:i.user.icon]
+            [:input {:type :text :placeholder "E-mail address"}]]
+           [:div.field
+            [:i.lock.icon]
+            [:input {:type :password :placeholder "Password"}]]])
 
 (defmethod main-content-multi :index []
   [:div.ui.text.container
@@ -63,16 +76,13 @@
   [:div "her da"])
 
 (defn main []
-  (println "snuppedup")
-
-  (fn []
-    (let [page (:current-page (session/get :route))]
-      [:div.pusher
-       [:div.ui.inverted.vertical.masthead.center.aligned.segment
-        [:div.ui.container
-         [menu]
-         [main-content-multi page]]]
-       [more-main-content]])))
+  (let [page (:current-page (session/get :route))]
+    [:div.pusher
+     [:div.ui.inverted.vertical.masthead.center.aligned.segment
+      [:div.ui.container
+       [menu]
+       [main-content-multi page]]]
+     [more-main-content]]))
 
 (defn start []
   (r/render-component
