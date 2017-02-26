@@ -12,7 +12,8 @@
    [["" :index]
     ["login" :login]
     ["signup" :sign-up]
-    [true :four-o-four]]])
+    [true :four-o-four]]
+   ])
 
 (defn menu []
   [:div.ui.large.secondary.inverted.pointing.menu
@@ -92,11 +93,9 @@
 (defn init! []
   (accountant/configure-navigation!
     {:nav-handler  (fn
-                     [path]                                 ;;(1)
-                     (let [match (bidi/match-route app-routes path)
-                           current-page (:handler match)
-                           route-params (:route-params match)]
-                       (session/put! :route {:current-page current-page
+                     [path]
+                     (let [{:keys [handler route-params]} (bidi/match-route app-routes path)]
+                       (session/put! :route {:current-page handler
                                              :route-params route-params})))
      :path-exists? (fn [path]
                      (boolean (bidi/match-route app-routes path)))})
