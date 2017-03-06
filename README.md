@@ -1,6 +1,8 @@
 # ls
 
 
+[![](https://codescene.io/projects/834/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/834/jobs/latest-successful/results)
+
 ## Development
 
 Open a terminal and type `lein repl` to start a Clojure REPL
